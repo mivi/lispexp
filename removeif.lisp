@@ -18,3 +18,5 @@
 (defun print-hello () 
   (format t "hello world"))
 
+(defun just-ret-string ()
+  "vishal")
