@@ -13,3 +13,4 @@ syntax: glob
 \#*\#
 *.fas
 *.lib
+.\#*
