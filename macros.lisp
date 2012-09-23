@@ -27,24 +27,81 @@
 
 (nil! x)
 (eql 'A 'a)
+
+;; PRE section 7.3 ; by look at :test
 (defmacro myeq (x y type)
   `(case ,type
-     (':string (string= ,x ,y))
-     (':number (= ,x ,y))))
+     (:string (string= ,x ,y))
+     (:number (= ,x ,y))))
 
 (myeq "vis" "vis" :string) ;(CASE :STRING (':STRING (STRING= "vis" "vis")) (':NUMBER (= "vis" "vis")))
 (myeq 1 1 :number)
 
 (defmacro myeq2 (x y type)
   (case type
-     (':string `(string= ,x ,y))
-     (':number `(= ,x ,y))))
+     (:string `(string= ,x ,y))
+     (:number `(= ,x ,y))))
 
 (myeq2 "vis" "vis" :string) ;(STRING= "vis" "vis")
 (myeq2 1 1 :number) ; (= 1 1)
 
+;; section 7.3 memq
+(member 10 '(1 2 3 10 15 34)) ; (10 15 34)
+(member '(1 2) '(1 2 10 (10 1 2 4) (1 2) 45 36) :test #'equal) ; ((1 2) 45 36)
 
+(defmacro memq (x xs)
+  `(member ,x ,xs :test #'equal))
+
+(memq '(1 2) '(1 2 10 (10 1 2 4) (1 2) 45 36)) ; ((1 2) 45 36)
+(memq 10 '(1 2 3 10 15 34)) ; (10 15 34)
+
+;; section 7.3 while
+(defmacro while (test &body body)
+  `(do ()
+       ((not ,test))
+     ,@body))
+
+(setq x 10)
+(while (> x 0)
+  (format t "~a ~%" x)
+  (decf x))
+
+(not 10) ; NIL
+(not -1) ; NIL
+
+;; Destructuring 
+(setq (x y (z) . k) (1 (2 3) (4) 6 7 (8 9) 0))
 (if (< 2 3) "v1" "v2")
+;;
+(dolist (x '(1 2 3))
+  (format t "~a~%" x)
+  (format t "~a~%" (1+ x)))
+
+(defmacro mydolist ((var list &optional result) &body body)
+  `(progn
+     (mapc #'(lambda (,var) ,@body)
+	   ,list)
+     (let ((,var nil))
+       ,result)))
+
+(mydolist (x '(1 2 3))
+  (format t "~a~%" x)
+  (format t "~a~%" (1+ x)))
+  
+;;
+(defmacro when-bind ((var expr) &body body)
+  `(let ((,var ,expr))
+     (when ,var
+       ,@body)))
+
+(when-bind (x (+ 3 5))
+  (format t "~a~%" x))
+
+;; section 7.6
+(get when-bind 'expander)
+(car '(when-bind (x (+ 3 5))
+  (format t "~a~%" x)))
+;; EMACS TIPS (SLIME)
 ; C-x C-e ; eval expr (cursor at end of line)
 ; C-c RET ; to check macro expansion (with cursor in macro call start brace)
 (if (< 4 3) "v1" '(1 2 3))
