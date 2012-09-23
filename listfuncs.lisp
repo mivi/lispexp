@@ -96,3 +96,10 @@
 ; mapcan is like mapcar but uses nconc to build list
 ; mapcon is like maplist but uses nconc to build list
 
+(subseq '(1 2 3 4) 1 2) ; (2) ; both are indexes
+(subseq '(1 2 3 4) 3 10) ; crash
+(subseq '(1 2 3 4) 2 1) ; crash
+
+(nthcdr 2 '(1 2 3)) ; (3)
+(nthcdr 4 '(1 2 3)) ; nil
+
