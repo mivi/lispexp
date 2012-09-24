@@ -57,6 +57,7 @@
 (append nil '(A)) ; (A)
 (append nil 'A) ; A
 (append 'A nil) ; crash
+(append '(1 2 3) nil '("vis" "jain") nil) ; (1 2 3 "vis" "jain")
 
 (nconc 10 20) ; crash
 (nconc nil nil) ; nil
