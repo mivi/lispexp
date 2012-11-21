@@ -50,7 +50,7 @@
 ;; (4 5)           || (cons (rec (2 3) nil) acc)
 (defun prune (fn tree)
   (labels ((rec (tree acc)
-	     (cond 
+	     (cond
 	       ((null tree) (nreverse acc))	;terminate
 	       ((consp (car tree))	;case 2
 		(rec (cdr tree) (cons (rec (car tree) nil) acc)))
@@ -59,8 +59,9 @@
 		      (rec (cdr tree) acc)
 		      (rec (cdr tree) (cons (car tree) acc)))))))
     (rec tree nil)))
-  
+
 (prune #'evenp '(1 (2 3 (6 7 nil 8 9) 4 5) 4 5))
 (prune #'evenp '(1 2 3))
 (prune #'evenp '(nil))
 
+(symb "vis")

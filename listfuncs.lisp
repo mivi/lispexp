@@ -86,7 +86,7 @@
 ; ((A B C) 1 2 3)
 ; ((B C) 2 3)
 ; ((C) 3)
-; 
+;
 ; (A B C)
 (mapcan #'cons '(a b c) '(1 2 3)) ; (A B C . 3)
 (mapcan #'cons '(a b c) '((1) (2) (3))) ; (A 1 B 2 C 3)
@@ -104,3 +104,4 @@
 (nthcdr 2 '(1 2 3)) ; (3)
 (nthcdr 4 '(1 2 3)) ; nil
 
+(copy-list '(1 2 (3 (4 5))))
